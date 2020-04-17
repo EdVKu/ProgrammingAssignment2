@@ -31,6 +31,7 @@ cachemean <- function(x, ...) {
 
 
 makeCacheMatrix <- function(x = matrix()) {
+  ## used if condition to make sure one has a square 2 by 2 matrix
   if(length(x)==4)
     n <<- x
   ## the n object is declared to be used outside of the function, in order for it to be cached by other 
