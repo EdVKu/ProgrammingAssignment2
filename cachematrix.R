@@ -1,51 +1,46 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
-
-makeVector <- function(x = numeric()) {
-  m <- NULL
-  set <- function(y) {
-    x <<- y
-    m <<- NULL
-  }
-  get <- function() x
-  setmean <- function(mean) m <<- mean
-  getmean <- function() m
-  list(set = set, get = get,
-       setmean = setmean,
-       getmean = getmean)
-}
-
-cachemean <- function(x, ...) {
-  m <- x$getmean()
-  if(!is.null(m)) {
-    message("getting cached data")
-    return(m)
-  }
-  data <- x$get()
-  m <- mean(data, ...)
-  x$setmean(m)
-  m
-}
 
 
 makeCacheMatrix <- function(x = matrix()) {
-  ## used if condition to make sure one has a square 2 by 2 matrix
-  if(length(x)==4)
-    n <<- x
-  ## the n object is declared to be used outside of the function, in order for it to be cached by other 
-  ## functions
-  else
-    break
+  ##An initial object mat is set to NULL
+  mat <- NULL
+  ##The setter is created
+  set <- function(z) {
+    #The argument for set (z) takes up the place of x in the original function
+    x <<- z
+    ##the mat object stays empty
+    mat <<- NULL
+  }
+  ## the getter just retrieves whatever value x has in the moment of its invocation (recall the
+  ## setter function) 
+  get <- function() x
+  #setIn gives the inverse matrix using Inv as an input, and saving it as mat
+  setIn <- function(inv) mat <<- inv
+  ## getIn retrueves the value of mat (NULL if an inverse Inv is not inicialized and defined)
+  getIn <- function() mat
+  ##all the subfunctions are listed and declared
+  list(set = set, get = get, setIn = setIn, getIn = getIn)
+  
+  
 }
 
 
 ## Write a short comment describing this function
 
+
+
 cacheSolve <- function(x, ...) {
-  ## returns the inverse of a matrix "n"
-  h <- solve(n)
-  return(h)
-  ## Return a matrix that is the inverse of 'x'
+  ##n retrieves the inverse of matrix x obtained previously
+  n <- x$getIn()
+  ## if such matrix is NOT empty, then return the already cached matrix
+  if(!is.null(n)){
+    print("retrieving cached data")
+    return(n)
+    
+  }
+  ##if it is, obtain the inverse
+  dat_ <- x$get()
+  n <- solve(dat_, ...)
+  x$setIn(n)
+  n
+  
 }
